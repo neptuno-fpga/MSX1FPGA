@@ -135,6 +135,7 @@ set_location_assignment PIN_B21 -to ps2_mouse_data_io
 set_location_assignment PIN_AA18 -to joyX_p7_o
 set_location_assignment PIN_A20 -to JOY_CLK
 set_location_assignment PIN_B19 -to JOY_DATA
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to JOY_DATA
 set_location_assignment PIN_B20 -to JOY_LOAD
 
 #NEPTUNO#
@@ -142,6 +143,12 @@ set_location_assignment PIN_A3 -to dac_l_o
 set_location_assignment PIN_B4 -to dac_r_o
 #set_location_assignment PIN_N5 -to mic_o --- UNAMIGA NO CAMBIADO
 set_location_assignment PIN_A14 -to ear_i
+## I2S audio
+set_location_assignment PIN_F22 -to i2s_mclk
+set_location_assignment PIN_H21 -to i2s_bclk
+set_location_assignment PIN_L22 -to i2s_lrclk
+set_location_assignment PIN_H22 -to i2s_data
+
 
 #set_location_assignment PIN_R8 -to btn_n_i[4]
 #set_location_assignment PIN_T8 -to btn_n_i[3]
@@ -167,6 +174,7 @@ set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to ps2_mouse_data_io
 set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to sd_miso_i
 set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to dac_l_o
 set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to dac_r_o
+set_global_assignment -name VHDL_FILE audio_i2s.vhd
 set_global_assignment -name VERILOG_FILE joydecoder_neptuno.v
 set_global_assignment -name VHDL_FILE "../../src/syn-neptuno/neptuno_top.vhd"
 set_global_assignment -name VHDL_FILE "../../src/syn-neptuno/pll1.vhd"

@@ -117,11 +117,30 @@ entity neptuno_top is
 		vga_vsync_n_o		: out   std_logic								:= '1';
 		
 		--STM32
-		stm_rst_o			: out std_logic		:= '0' -- '0' to hold the microcontroller reset line, to free the SD card	
+		stm_rst_o			: out std_logic		:= '0'; -- '0' to hold the microcontroller reset line, to free the SD card
+
+		-- I2S audio
+		i2s_mclk				: out   std_logic								:= '0';
+		i2s_bclk				: out   std_logic								:= '0';
+		i2s_lrclk			: out   std_logic								:= '0';
+		i2s_data				: out   std_logic								:= '0'		
+		
 	);
 end entity;
 
 architecture behavior of neptuno_top is
+
+	component audio_top is
+	Port ( 	
+				clk_50MHz : in STD_LOGIC; -- system clock (50 MHz)
+				dac_MCLK : out STD_LOGIC; -- outputs to PMODI2L DAC
+				dac_LRCK : out STD_LOGIC;
+				dac_SCLK : out STD_LOGIC;
+				dac_SDIN : out STD_LOGIC;
+				L_data : 	in std_logic_vector(15 downto 0);  	-- LEFT data (15-bit signed)
+				R_data : 	in std_logic_vector(15 downto 0)  	-- RIGHT data (15-bit signed) 
+	);
+	end component;	
 
 	-- Buttons
 	signal btn_por_n_s		: std_logic;
@@ -274,6 +293,10 @@ architecture behavior of neptuno_top is
 	
 
 begin
+
+	stm_rst_o <= '0';
+
+
 
 	-- PLL1
 	pll: entity work.pll1
@@ -592,7 +615,20 @@ begin
 		dac_i		=> audio_r_amp_s,
 		dac_o		=> dac_r_o
 	);
-
+	
+	-- I2S audio
+	
+	audio_i2s: entity work.audio_top
+	port map(
+		clk_50MHz => clock_50_i,
+		dac_MCLK  => i2s_mclk,
+		dac_LRCK  => i2s_lrclk,
+		dac_SCLK  => i2s_bclk,
+		dac_SDIN  => i2s_data,
+		L_data    => std_logic_vector(audio_l_s),
+		R_data    => std_logic_vector(audio_r_s)
+	);		
+	
 	-- Glue logic
 
 	-- Resets
