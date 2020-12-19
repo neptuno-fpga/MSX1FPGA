@@ -119,8 +119,7 @@ entity neptuno_top is
 		--STM32
 		stm_rst_o			: out std_logic		:= '0'; -- '0' to hold the microcontroller reset line, to free the SD card
 
-		-- I2S audio
-		i2s_mclk				: out   std_logic								:= '0';
+		-- I2S audio		
 		i2s_bclk				: out   std_logic								:= '0';
 		i2s_lrclk			: out   std_logic								:= '0';
 		i2s_data				: out   std_logic								:= '0'		
@@ -269,6 +268,9 @@ architecture behavior of neptuno_top is
 	signal joy2right		: std_logic								:= '1';
 	signal joy2fire1		: std_logic								:= '1';
 	signal joy2fire2		: std_logic								:= '1';
+	
+	-- i2s 
+	signal i2s_mclk		    : std_logic								:= '0';
 	
 	component joydecoder is
 	Port ( 	
